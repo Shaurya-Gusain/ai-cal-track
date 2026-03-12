@@ -29,7 +29,7 @@ export default function SignIn() {
                 identifier: emailAddress,
                 password,
             });
-            
+
             if (completeSignIn.status === 'complete' && completeSignIn.createdSessionId) {
                 // This indicates the user is signed in
                 await setActive({ session: completeSignIn.createdSessionId });

@@ -28,6 +28,15 @@ export default function Home() {
           imageUrl: user.imageUrl,
           createdAt: new Date(),
         });
+      } else {
+        await setDoc(userRef, {
+          id: user.id,
+          email: user.primaryEmailAddress?.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          imageUrl: user.imageUrl,
+          updatedAt: new Date(),
+        }, { merge: true });
       }
       setSavingStatus('saved');
     } catch (error) {
