@@ -11,32 +11,32 @@ export default function Home() {
   const { user } = useUser();
   const [savingStatus, setSavingStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
-  useEffect(() => {
-    const saveUserToFirestore = async () => {
-      if (!user) return;
+  const saveUserToFirestore = async () => {
+    if (!user) return;
 
-      setSavingStatus('saving');
-      try {
-        const userRef = doc(db, 'users', user.id);
-        const userSnap = await getDoc(userRef);
+    setSavingStatus('saving');
+    try {
+      const userRef = doc(db, 'users', user.id);
+      const userSnap = await getDoc(userRef);
 
-        if (!userSnap.exists()) {
-          await setDoc(userRef, {
-            id: user.id,
-            email: user.primaryEmailAddress?.emailAddress,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            imageUrl: user.imageUrl,
-            createdAt: new Date(),
-          });
-        }
-        setSavingStatus('saved');
-      } catch (error) {
-        console.error("Error saving user to Firestore: ", error);
-        setSavingStatus('error');
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          id: user.id,
+          email: user.primaryEmailAddress?.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          imageUrl: user.imageUrl,
+          createdAt: new Date(),
+        });
       }
-    };
+      setSavingStatus('saved');
+    } catch (error) {
+      console.error("Error saving user to Firestore: ", error);
+      setSavingStatus('error');
+    }
+  };
 
+  useEffect(() => {
     saveUserToFirestore();
   }, [user]);
 
@@ -77,7 +77,17 @@ export default function Home() {
           {savingStatus === 'saved' && (
             <View style={styles.statusContainer}>
               <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.statusText}>Profile syned with Firestore</Text>
+              <Text style={styles.statusText}>Profile synced with Firestore</Text>
+            </View>
+          )}
+
+          {savingStatus === 'error' && (
+            <View style={[styles.statusContainer, styles.errorStatusContainer]}>
+              <Ionicons name="alert-circle" size={20} color="#FF3B30" />
+              <Text style={[styles.statusText, styles.errorStatusText]}>Failed to sync profile</Text>
+              <TouchableOpacity onPress={saveUserToFirestore} style={styles.retryButton}>
+                <Text style={styles.retryButtonText}>Retry</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -137,6 +147,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginBottom: 16,
   },
+  placeholderAvatar: {
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   userName: {
     fontSize: 22,
     fontWeight: '700',
@@ -162,6 +177,24 @@ const styles = StyleSheet.create({
     color: '#4CAF50',
     fontWeight: '600',
     fontSize: 14,
+  },
+  errorStatusContainer: {
+    backgroundColor: '#FFE5E5',
+  },
+  errorStatusText: {
+    color: '#FF3B30',
+  },
+  retryButton: {
+    marginLeft: 12,
+    backgroundColor: '#FF3B30',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  retryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
   },
   actionButton: {
     backgroundColor: '#4CAF50',
