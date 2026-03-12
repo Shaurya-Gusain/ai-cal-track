@@ -29,12 +29,20 @@ export default function SignIn() {
                 identifier: emailAddress,
                 password,
             });
-            // This indicates the user is signed in
-            await setActive({ session: completeSignIn.createdSessionId });
-            router.replace('/');
+
+            if (completeSignIn.status === 'complete' && completeSignIn.createdSessionId) {
+                // This indicates the user is signed in
+                await setActive({ session: completeSignIn.createdSessionId });
+                router.replace('/');
+            } else {
+                console.log('SignIn status not complete:', completeSignIn.status);
+                // Handle other statuses like needs_second_factor
+                alert('Additional steps required to sign in.');
+            }
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));
-            alert(err.errors[0].message);
+            const errorMessage = err?.errors?.[0]?.message || err?.message || JSON.stringify(err);
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -42,13 +50,16 @@ export default function SignIn() {
 
     const onGoogleSignInPress = async () => {
         try {
-            const { createdSessionId, setActive: setActiveSSO } = await startSSOFlow({
+            const { createdSessionId, setActive: setActiveSSO, signIn: signInSSO } = await startSSOFlow({
                 strategy: 'oauth_google',
                 redirectUrl: 'aicaltrack://oauth-callback',
             });
-            if (createdSessionId) {
+            if (signInSSO?.status === 'complete' && createdSessionId) {
                 await setActiveSSO!({ session: createdSessionId });
                 router.replace('/');
+            } else if (createdSessionId) {
+                console.log('OAuth SignIn status not complete:', signInSSO?.status);
+                alert('Additional steps required to complete sign in.');
             }
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));

@@ -42,7 +42,8 @@ export default function SignUp() {
             setPendingVerification(true);
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));
-            alert(err.errors[0].message);
+            const errorMessage = err?.errors?.[0]?.message ?? err?.message ?? String(err);
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -66,7 +67,8 @@ export default function SignUp() {
             }
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));
-            alert(err.errors[0].message);
+            const errorMessage = err?.errors?.[0]?.message ?? err?.message ?? String(err);
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -84,7 +86,8 @@ export default function SignUp() {
             }
         } catch (err: any) {
             console.error(JSON.stringify(err, null, 2));
-            alert(err?.errors?.[0]?.message ?? 'Google sign-in failed');
+            const errorMessage = err?.errors?.[0]?.message ?? err?.message ?? String(err);
+            alert(errorMessage || 'Google sign-up failed');
         }
     };
 
