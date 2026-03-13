@@ -5,6 +5,7 @@ import { Link, useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -146,7 +147,7 @@ export default function SignIn() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.background,
     },
     scrollContent: {
         flexGrow: 1,
@@ -166,12 +167,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: '700',
-        color: '#1A1A1A',
+        color: Colors.text,
         marginBottom: 8,
     },
     subtitle: {
         fontSize: 16,
-        color: '#7C7C7C',
+        color: Colors.textMuted,
     },
     form: {
         width: '100%',
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: Colors.surface,
         borderRadius: 16,
         marginBottom: 16,
         paddingHorizontal: 16,
@@ -191,23 +192,23 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: 16,
-        color: '#1A1A1A',
+        color: Colors.text,
     },
     signInButton: {
-        backgroundColor: '#4CAF50',
+        backgroundColor: Colors.primary,
         borderRadius: 16,
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 8,
-        shadowColor: '#4CAF50',
+        shadowColor: Colors.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
         elevation: 4,
     },
     signInButtonText: {
-        color: '#FFFFFF',
+        color: Colors.background,
         fontSize: 16,
         fontWeight: '600',
     },
@@ -219,10 +220,10 @@ const styles = StyleSheet.create({
     divider: {
         flex: 1,
         height: 1,
-        backgroundColor: '#E0E0E0',
+        backgroundColor: Colors.border,
     },
     dividerText: {
-        color: '#7C7C7C',
+        color: Colors.textMuted,
         paddingHorizontal: 16,
         fontSize: 14,
     },
@@ -230,14 +231,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.background,
         borderWidth: 1,
-        borderColor: '#E0E0E0',
+        borderColor: Colors.border,
         borderRadius: 16,
         height: 56,
     },
     googleButtonText: {
-        color: '#1A1A1A',
+        color: Colors.text,
         fontSize: 16,
         fontWeight: '600',
         marginLeft: 12,
@@ -248,11 +249,11 @@ const styles = StyleSheet.create({
         marginTop: 32,
     },
     footerText: {
-        color: '#7C7C7C',
+        color: Colors.textMuted,
         fontSize: 14,
     },
     footerLink: {
-        color: '#4CAF50',
+        color: Colors.primary,
         fontSize: 14,
         fontWeight: '600',
     },
